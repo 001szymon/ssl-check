@@ -110,7 +110,7 @@ date_diff()
 #####################################################################
 prints()
 {
-    ${PRINTF} "%-35s %-17s %-8s\n" "$1" "$4" "$3"
+    ${PRINTF} "%-35s %-17s %-8s\n" "$5" "$4" "$3"
 }
 
 print_heading()
@@ -199,15 +199,22 @@ check_file_status() {
     # Extract the expiration date from the ceriticate
     CERTDATE=$("${OPENSSL}" x509 -in "${CERTFILE}" -enddate -noout -inform pem | \
                     "${SED}" 's/notAfter\=//')
-
+    
     # Extract the issuer from the certificate
     CERTISSUER=$("${OPENSSL}" x509 -in "${CERTFILE}" -issuer -noout -inform pem | \
-                     "${AWK}" 'BEGIN {RS=", " } $0 ~ /^O =/ { print substr($0,5,17)}')
+                    # "${AWK}" 'BEGIN {RS=", " } $0 ~ /^O =/ { print substr($0,5,17)}')
+                    "${SED}" 's/^.*CN=//' | "${SED}" 's/\/.*$//')
 
     ### Grab the common name (CN) from the X.509 certificate
     COMMONNAME=$("${OPENSSL}" x509 -in "${CERTFILE}" -subject -noout -inform pem | \
-                     "${SED}" -e 's/.*CN = //' | \
-                     "${SED}" -e 's/, .*//')
+                    # "${SED}" -e 's/.*CN = //' | \
+                    # "${SED}" -e 's/, .*//')
+                    "${SED}" 's/^subject= //')
+
+    #$OPENSSL x509 -in "$cert_fname" -subject -noout 2>/dev/null | sed 's/^subject= //')
+    # | awk -F'=' '/CN=/ { print $2 }')
+
+
 
     ### Split the result into parameters, and pass the relevant pieces to date2julian
     set -- ${CERTDATE}
