@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Source code: https://github.com/001szymon/ssl-check
+# Source code:https://github.com/001szymon/ssl-check
 #
 # Last Update: 21-MAR-2021
 #
@@ -110,8 +110,7 @@ date_diff()
 #####################################################################
 prints()
 {
-    ${PRINTF} "%-35s %-17s %-8s\n" "$5" "$4" "$3"
-    #${PRINTF} "%-35s %-17s %-8s\n" "$1" "$4" "$3"
+    ${PRINTF} "%-35s %-17s %-8s\n" "$1" "$4" "$3"
 }
 
 print_heading()
@@ -211,17 +210,14 @@ check_file_status() {
                      "${SED}" -e 's/, .*//')
 
     ### Split the result into parameters, and pass the relevant pieces to date2julian
-    echo "TEEEEEEEEEEEEEEEEEEEESTTTTTTTTTTTT"
-    echo ${CERTDATE}
-    echo "TEEEEEEEEEEEEEEEEEEEESTTTTTTTTTTTT"
     set -- ${CERTDATE}
     MONTH=$(getmonth "${1}")
-    echo ${MONTH}
-    echo "TEEEEEEEEEEEEEEEEEEEESTTTTTTTTTTTT"
 
     # Convert the date to seconds, and get the diff between NOW and the expiration date
     CERTJULIAN=$(date2julian "${MONTH#0}" "${2#0}" "${4}")
     CERTDIFF=$(date_diff "${NOWJULIAN}" "${CERTJULIAN}")
+
+    echo ${CERTISSUER}
 
     if [ "${CERTDIFF}" -lt 0 ]; then
         prints "${HOST}" "${PORT}" "False" "${CERTISSUER}" "${COMMONNAME}"
