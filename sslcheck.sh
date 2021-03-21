@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #
 # Source code:https://github.com/001szymon/ssl-check
-#
+# 
 # Last Update: 21-MAR-2021
 #
 
@@ -206,10 +206,7 @@ check_file_status() {
 
     ### Grab the common name (CN) from the X.509 certificate
     COMMONNAME=$("${OPENSSL}" x509 -in "${CERTFILE}" -subject -noout -inform pem | \
-                    "${SED}" -e 's/.*CN = //' | \
-                    "${SED}" -e 's/, .*//')
-                    #"${SED}" 's/^subject= //')
-                    #"${AWK}" -F'=' '/CN=/ { print $2 }')
+                    "${SED}" 's/^.*CN=//')
 
     ### Split the result into parameters, and pass the relevant pieces to date2julian
     set -- ${CERTDATE}
