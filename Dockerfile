@@ -1,9 +1,9 @@
-FROM alpine:3.11
+FROM alpine:3.12
 
 RUN apk update && \
     apk upgrade && \
-    apk add bash git coreutils curl openssl && \
-    rm -rf /var/cache/apk/* && \
+    apk add bash git coreutils curl wget openssl && \
+    rm -fR /var/cache/apk/* && \
     addgroup sslcheck && \
     adduser -G sslcheck -g "sslcheck user"  -s /bin/bash -D sslcheck && \
     ln -s /home/sslcheck/sslcheck.sh /usr/local/bin/ && \
@@ -18,4 +18,4 @@ COPY --chown=sslcheck:sslcheck sslcheck.sh  /home/sslcheck/
 
 ENTRYPOINT ["sslcheck.sh"]
 
-CMD ["--help"]
+CMD ["-h"]
