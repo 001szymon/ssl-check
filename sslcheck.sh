@@ -210,7 +210,7 @@ check_file_status() {
                     # "${SED}" -e 's/, .*//')
                     #"${SED}" 's/^subject= //')
                     #"${AWK}" -F'=' '/CN=/ { print $2 }')
-                    "${AWK}" 'BEGIN{FS="Subject: "} NF==2{print $2}'
+                    "${AWK}" 'BEGIN{FS="Subject: "} NF==2{print $2}')
 
     ### Split the result into parameters, and pass the relevant pieces to date2julian
     set -- ${CERTDATE}
