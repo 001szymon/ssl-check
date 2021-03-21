@@ -106,7 +106,7 @@ date_diff()
 #   $2 -> TCP Port
 #   $3 -> isValid
 #   $4 -> Issuer
-#   $5 -> Common Name
+#   $5 -> Subject
 #####################################################################
 prints()
 {
@@ -210,7 +210,7 @@ check_file_status() {
                     # "${SED}" -e 's/, .*//')
                     #"${SED}" 's/^subject= //')
                     #"${AWK}" -F'=' '/CN=/ { print $2 }')
-                    "${SED}" 's/^.*CN=//' | "${SED}" 's/\/.*$//')
+                    "${AWK}" 'BEGIN{FS="Subject: "} NF==2{print $2}'
 
     ### Split the result into parameters, and pass the relevant pieces to date2julian
     set -- ${CERTDATE}
