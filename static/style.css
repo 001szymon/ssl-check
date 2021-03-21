@@ -1,0 +1,19 @@
+.notice {
+    position: relative;
+    bottom: 0px;
+    font-size: small;
+    text-align: center;
+    width: 100%;
+}
+
+.errormsg {
+    background-color: red;
+    padding: 10px;
+}
+
+.progress-style {
+    text-align: left;
+}
+.progress {
+    max-width: 68%;
+}
