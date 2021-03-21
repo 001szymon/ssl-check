@@ -204,15 +204,16 @@ check_file_status() {
     CERTISSUER=$("${OPENSSL}" x509 -in "${CERTFILE}" -issuer -noout -inform pem | \
                     # "${AWK}" 'BEGIN {RS=", " } $0 ~ /^O =/ { print substr($0,5,17)}')
                     "${SED}" 's/^.*CN=//' | "${SED}" 's/\/.*$//')
-echo CERTISSUER
-echo ${CERTISSUER}
+    echo "CERTISSUER"
+    echo ${CERTISSUER}
+
     ### Grab the common name (CN) from the X.509 certificate
     COMMONNAME=$("${OPENSSL}" x509 -in "${CERTFILE}" -subject -noout -inform pem | \
                     # "${SED}" -e 's/.*CN = //' | \
                     # "${SED}" -e 's/, .*//')
                     "${SED}" 's/^subject= //')
-echo COMMONNAME
-echo ${COMMONNAME}
+    echo "COMMONNAME"
+    echo ${COMMONNAME}
     #$OPENSSL x509 -in "$cert_fname" -subject -noout 2>/dev/null | sed 's/^subject= //')
     # | awk -F'=' '/CN=/ { print $2 }')
 
@@ -225,8 +226,6 @@ echo ${COMMONNAME}
     # Convert the date to seconds, and get the diff between NOW and the expiration date
     CERTJULIAN=$(date2julian "${MONTH#0}" "${2#0}" "${4}")
     CERTDIFF=$(date_diff "${NOWJULIAN}" "${CERTJULIAN}")
-
-    echo ${CERTISSUER}
 
     if [ "${CERTDIFF}" -lt 0 ]; then
         prints "${HOST}" "${PORT}" "False" "${CERTISSUER}" "${COMMONNAME}"
