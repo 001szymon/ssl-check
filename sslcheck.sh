@@ -110,13 +110,13 @@ date_diff()
 #####################################################################
 prints()
 {
-    ${PRINTF} "%-35s %-17s %-8s\n" "$5" "$4" "$3"
+    ${PRINTF} "%-25s %-45s %-8s\n" "$5" "$4" "$3"
 }
 
 print_heading()
 {
-    ${PRINTF} "\n%-35s %-35s %-8s\n" "subject" "issuer" "isValid"
-    echo "----------------------------------- ----------------------------------- --------"
+    ${PRINTF} "\n%-25s %-45s %-8s\n" "subject" "issuer" "isValid"
+    echo "------------------------- --------------------------------------------- --------"
 }
 
 ##########################################
@@ -202,7 +202,6 @@ check_file_status() {
     
     # Extract the issuer from the certificate
     CERTISSUER=$("${OPENSSL}" x509 -in "${CERTFILE}" -issuer -noout -inform pem | \
-                    # "${AWK}" 'BEGIN {RS=", " } $0 ~ /^O =/ { print substr($0,5,17)}')
                     "${SED}" 's/^.*CN=//' | "${SED}" 's/\/.*$//')
 
     ### Grab the common name (CN) from the X.509 certificate
@@ -210,10 +209,8 @@ check_file_status() {
                     # "${SED}" -e 's/.*CN = //' | \
                     # "${SED}" -e 's/, .*//')
                     #"${SED}" 's/^subject= //')
-                    "${AWK}" -F'=' '/CN=/ { print $2 }')
-
-    #$OPENSSL x509 -in "$cert_fname" -subject -noout 2>/dev/null | sed 's/^subject= //')
-    # | awk -F'=' '/CN=/ { print $2 }')
+                    #"${AWK}" -F'=' '/CN=/ { print $2 }')
+                    "${SED}" 's/^.*CN=//' | "${SED}" 's/\/.*$//')
 
     ### Split the result into parameters, and pass the relevant pieces to date2julian
     set -- ${CERTDATE}
