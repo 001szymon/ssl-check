@@ -1,0 +1,70 @@
+{% extends "app.html" %}
+{% block content %}
+<script>
+var progressVal = 0;
+function progress() {
+    progressVal = 0;
+    document.getElementById("progress").textContent = "Please Wait...";
+    setTimeout(progressContinue, 1000);
+}
+
+function progressContinue() {
+    document.getElementById("progress").style.width = progressVal++ + "%";
+    setTimeout(progressContinue, 1000);
+}
+</script>
+<div>
+<form method="POST" class="form-horizontal">
+    <div class="form-group">
+        <h1><span class="label label-default col-sm-8">SSL Check Portal</span></h1>
+    </div>
+    <div class="form-group">
+        {% for message in get_flashed_messages() %}
+        <div class="alert alert-danger col-sm-8">{{ message }}</div>
+        {% endfor %}
+    </div>
+    <div class="form-group">
+        <label class="col-sm-4 control-label">Hostname/IP</label>
+        <div class="col-sm-4">
+            <input type="text" name="host" class="form-control" />
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-4 control-label">Port</label>
+        <div class="col-sm-4">
+            <input type="number" name="port" min="0" max="65535" value="443" class="form-control" />
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-4 control-label">Use STARTTLS</label>
+        <div class="col-sm-4">
+            <input type="checkbox" class="checkbox" name="starttls" value="yes" class="form-control"> 
+            STARTTLS Protocol:
+            <select name="protocol" class="form-control">
+                <option value="ftp">ftp</option>
+                <option value="smtp">smtp</option>
+                <option value="pop3">pop3</option>
+                <option value="imap">imap</option>
+                <option value="xmpp">xmpp</option>
+                <option value="telnet">telnet</option>
+                <option value="ldap">ldap</option>
+            </select>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-4 control-label">I confirm that I am authorized to scan this system</label>
+        <div class="col-sm-4">
+            <input type="checkbox" name="confirm" value="yes">
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-offset-4 col-sm-4">
+            <input type="submit" class="btn btn-primary" onclick="progress()" value="Perform SSL Check">
+        </div>
+    </div>
+</form>
+<div class="progress">
+    <div id="progress" class="progress-bar progress-style" role="progressbar"></div>
+</div>
+</div>
+{% endblock %}
